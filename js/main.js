@@ -16,16 +16,34 @@ if(t) t.scrollIntoView({behavior:'smooth'});
 // Mobile menu toggle
 const mobileBtn = document.getElementById('mobile-menu-btn');
 const nav = document.querySelector('.main-nav');
-mobileBtn && mobileBtn.addEventListener('click', ()=>{
-if(nav.style.display === 'flex'){
-nav.style.display = '';
-} else {
-nav.style.display = 'flex'; nav.style.flexDirection = 'column'; nav.style.gap = '12px';
-nav.style.position = 'absolute'; nav.style.right = '18px'; nav.style.top = '64px';
-nav.style.background = 'var(--muted-bg)'; nav.style.padding = '12px'; nav.style.borderRadius = '8px';
-nav.style.boxShadow = '0 8px 28px rgba(0,0,0,0.12)';
+if (mobileBtn && nav) {
+    mobileBtn.addEventListener('click', () => {
+        if (nav.style.display === 'flex') {
+            nav.style.display = 'none';
+        } else {
+            nav.style.display = 'flex';
+            nav.style.flexDirection = 'column';
+            nav.style.gap = '12px';
+            nav.style.position = 'absolute';
+            nav.style.right = '18px';
+            nav.style.top = '64px';
+            nav.style.background = 'var(--muted-bg)';
+            nav.style.padding = '12px';
+            nav.style.borderRadius = '8px';
+            nav.style.boxShadow = '0 8px 28px rgba(0,0,0,0.12)';
+            nav.style.width = 'auto';
+            nav.style.minWidth = '200px';
+            nav.style.zIndex = '50';
+        }
+    });
+
+    // Fechar menu ao clicar fora
+    document.addEventListener('click', (e) => {
+        if (!nav.contains(e.target) && !mobileBtn.contains(e.target) && nav.style.display === 'flex') {
+            nav.style.display = 'none';
+        }
+    });
 }
-});
 // Formulário - validação básica
 const form = document.getElementById('contact-form');
 if(form){
@@ -48,10 +66,27 @@ if(window.scrollY > 300) wa.classList.add('visible'); else wa.classList.remove('
 // THEME: inicialização e toggle
 const themeToggle = document.getElementById('theme-toggle');
 const root = document.documentElement;
+
+// Função para definir o tema
+const setTheme = (theme) => {
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('ntech-theme', theme);
+    if (themeToggle) {
+        themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    }
+};
+
+// Inicialização do tema
 const stored = localStorage.getItem('ntech-theme');
 const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-if(stored) root.setAttribute('data-theme', stored);
-else if(prefersDark) root.setAttribute('data-theme', 'dark');
+
+if (stored) {
+    setTheme(stored);
+} else if (prefersDark) {
+    setTheme('dark');
+} else {
+    setTheme('light');
+}
 
 
 // atualiza aria-pressed do botão
@@ -61,18 +96,15 @@ if(themeToggle){ themeToggle.setAttribute('aria-pressed', active ? 'true' : 'fal
 };
 updateToggleState();
 if(themeToggle){
-themeToggle.addEventListener('click', ()=>{
-// animação: girar
-themeToggle.style.transform = 'rotate(360deg)';
-setTimeout(()=> themeToggle.style.transform = '', 350);
+    themeToggle.addEventListener('click', ()=>{
+        // animação: girar
+        themeToggle.style.transform = 'rotate(360deg)';
+        setTimeout(()=> themeToggle.style.transform = '', 350);
 
-
-const current = root.getAttribute('data-theme');
-const next = current === 'dark' ? 'light' : 'dark';
-root.setAttribute('data-theme', next);
-localStorage.setItem('ntech-theme', next);
-updateToggleState();
-});
+        const current = root.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        setTheme(next);
+    });
 }
 
 
