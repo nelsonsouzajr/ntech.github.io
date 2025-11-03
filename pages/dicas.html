@@ -5,73 +5,154 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dicas NTech — Manutenção de Computadores</title>
   <link rel="stylesheet" href="../css/styles.css">
+  <script defer src="../js/main.js"></script>
 </head>
 <body>
+  <!-- Cabeçalho -->
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="index.html">
-        <img src="../assets/images/logo.svg" alt="NTech" class="logo">
+      <a class="brand" href="../index.html">
+        <img src="../assets/logo.png" alt="NTech" class="logo">
         <span class="brand-text">NTech</span>
       </a>
       <nav class="main-nav">
-        <a href="index.html">Home</a>
-        <a href="dicas.html">Dicas</a>
-        <a href="index.html#servicos">Serviços</a>
-        <a href="index.html#contato">Contato</a>
+        <a href="../index.html">Home</a>
+          <a href="../index.html#sobre">Sobre</a>
+          <a href="../index.html#servicos">Serviços</a>
+          <a href="../index.html#depoimentos">Depoimentos</a>
+          <a href="dicas.html">Dicas</a>
+          <a href="../index.html#contato">Contato</a>
       </nav>
-      <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema" aria-pressed="false">
-        <span class="icon sun">☀️</span>
-        <span class="icon moon">🌙</span>
-      </button>
+      <div class="header-controls">
+          <!-- Theme toggle -->
+          <button
+            id="theme-toggle"
+            class="theme-toggle"
+            aria-label="Alternar tema"
+            aria-pressed="false"
+          >
+            <span class="icon sun" aria-hidden="true">☀️</span>
+            <span class="icon moon" aria-hidden="true">🌙</span>
+          </button>
+          <!-- WhatsApp CTA -->
+          <a
+            class="btn whatsapp"
+            href="https://wa.me/5519997074367"
+            target="_blank"
+            rel="noopener"
+            >💬 WhatsApp</a
+          >
     </div>
   </header>
 
   <main>
+    <!-- Hero -->
     <section class="tips-hero">
-      <div class="container">
-        <h1>Dicas NTech</h1>
-        <p>Aprenda cuidados e truques para manter seus computadores, notebooks e eletrônicos sempre funcionando bem.</p>
-        <img src="../assets/images/tips-cover.jpg" alt="Dicas de manutenção">
-      </div>
-    </section>
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <h1>Aprenda a cuidar do seu PC e eletrônicos</h1>
+      <p>Dicas práticas para aumentar desempenho, evitar problemas e prolongar a vida útil dos seus equipamentos.</p>
+      <a class="btn primary" href="#tips-list">Ver dicas</a>
+    </div>
+    <div class="hero-media">
+      <img src="../assets/images/tips/tips-hero.png" alt="Dicas de manutenção">
+    </div>
+  </div>
+</section>
 
-    <section class="tips-list">
-      <div class="container">
-        <article class="tip-card">
-          <h3>Como deixar o PC mais rápido</h3>
-          <p>Limpeza de arquivos temporários, desativação de programas na inicialização e atualização de drivers podem aumentar significativamente o desempenho.</p>
-        </article>
+      <!-- Lista de Dicas -->
+      <section class="tips-list" id="tips-list">
+        <div class="container cards">
+          <!-- Dica 1 -->
+          <article class="card">
+            <img src="../assets/images/tips/tip-speedup.jpg" alt="Otimização de computador">
+            <h3>Como deixar o PC mais rápido</h3>
+            <p>
+              Um computador lento geralmente é resultado de inicializações automáticas em excesso, arquivos temporários e falta de manutenção do sistema.
+              Desinstale programas desnecessários, limpe a pasta temporária regularmente e utilize o "Gerenciador de Tarefas" para identificar processos pesados.
+              Também vale investir em um SSD — a diferença de desempenho é notável.
+            </p>
+          </article>
 
-        <article class="tip-card">
-          <h3>Como escolher um antivírus</h3>
-          <p>Priorize antivírus leves, atualizações automáticas e proteção em tempo real. Combine com boas práticas de navegação segura.</p>
-        </article>
+          <!-- Dica 2 -->
+          <article class="card">
+            <img src="../assets/images/tips/tip-antivirus.png" alt="Antivírus para PC">
+            <h3>Como escolher um antivírus confiável</h3>
+            <p>
+              Um bom antivírus deve oferecer proteção em tempo real, atualizações automáticas e impacto mínimo no desempenho.
+              Opte por marcas reconhecidas, como Bitdefender, Kaspersky ou Windows Defender (que evoluiu muito nas últimas versões do Windows 10 e 11).
+              Evite usar dois antivírus simultaneamente — isso pode causar lentidão e conflitos.
+            </p>
+          </article>
 
-        <article class="tip-card">
-          <h3>Sinais de superaquecimento do notebook</h3>
-          <p>Ventoinhas muito barulhentas, desligamentos inesperados, teclado quente e desempenho lento são sinais de alerta. Mantenha o notebook limpo e ventilado.</p>
-        </article>
+          <!-- Dica 3 -->
+          <article class="card">
+            <img src="../assets/images/tips/tip-overheat.png" alt="Notebook superaquecendo">
+            <h3>Sinais de superaquecimento do notebook</h3>
+            <p>
+              O calor excessivo pode danificar componentes internos. Fique atento a travamentos, ruídos altos das ventoinhas e quedas de desempenho.
+              Mantenha o notebook em superfícies planas, utilize bases com ventilação e faça limpezas internas periódicas com profissional qualificado.
+            </p>
+          </article>
 
-        <article class="tip-card">
-          <h3>Manutenção preventiva</h3>
-          <p>Limpeza de poeira interna, verificação de cabos e componentes, e backup regular ajudam a prevenir problemas graves.</p>
-        </article>
+          <!-- Dica 4 -->
+          <article class="card">
+            <img src="../assets/images/tips/tip-preventive.png" alt="Manutenção preventiva de computador">
+            <h3>Manutenção preventiva: quando fazer</h3>
+            <p>
+              Assim como um carro, seu computador precisa de manutenção periódica.
+              A cada 6 meses, recomenda-se verificar cabos, pasta térmica, ventoinhas e estado físico dos componentes.
+              Essa rotina simples evita curtos e aumenta a durabilidade do equipamento.
+            </p>
+          </article>
 
-        <article class="tip-card">
-          <h3>Upgrade de memória e SSD</h3>
-          <p>Adicionar memória RAM ou substituir o HD por um SSD pode melhorar drasticamente o desempenho do seu computador ou notebook.</p>
-        </article>
-      </div>
-    </section>
+          <!-- Dica 5 -->
+          <article class="card">
+            <img src="../assets/images/tips/tip-upgrade.png" alt="Upgrade de SSD e memória RAM">
+            <h3>Upgrade de memória e SSD</h3>
+            <p>
+              Um dos upgrades com melhor custo-benefício é instalar um SSD e adicionar memória RAM.
+              A inicialização do sistema e a abertura de programas se tornam quase instantâneas.
+              Consulte um técnico de confiança para saber se o seu notebook é compatível e qual o tipo de SSD indicado (SATA, M.2 ou NVMe).
+            </p>
+          </article>
+
+          <!-- Dica 6 -->
+          <article class="card">
+            <img src="../assets/images/tips/tip-backup.png" alt="Backup de dados">
+            <h3>Importância do backup de dados</h3>
+            <p>
+              Perder dados importantes pode ser devastador. Realize backups regulares utilizando serviços na nuvem (Google Drive, OneDrive) ou dispositivos externos (HDs, pen drives).
+              Automatize o processo sempre que possível para garantir que seus arquivos estejam sempre protegidos contra falhas ou ataques de malware.
+            </p>
+          </article>
+
+          <!-- Dica 7 
+          <article class="card">
+            <img src="../assets/images/tips/tip-deactivate.png" alt="Desativar programas na inicialização do Windows">
+            <h3></h3>
+            <p>
+              Seu PC está parecendo uma tartaruga ao ligar? Muitos programas desnecessários podem estar iniciando junto com ele! Aprenda a desativar o que não precisa e deixe seu computador voando.
+            </p>
+          </article>
+        -->
+      </section>
   </main>
+  <!-- WhatsApp flutuante -->
+    <a
+      class="whatsapp-float"
+      href="https://wa.me/+5519997074367"
+      target="_blank"
+      aria-label="Fale conosco pelo WhatsApp"
+      >💬</a
+    >
 
+  <!-- Rodapé -->
   <footer class="site-footer">
     <div class="container">
       <div>© <span id="year"></span> NTech — Todos os direitos reservados</div>
       <div>Desenvolvido por Nelson Souza</div>
     </div>
   </footer>
-
-  <script src="../js/main.js"></script>
 </body>
 </html>

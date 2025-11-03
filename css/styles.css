@@ -12,6 +12,8 @@
   --accent: #007bff;
   --accent-hover: #2563eb;
 }
+
+
 /* Dark theme overrides (Dark Blue Tech) */
 :root[data-theme="dark"] {
   --bg: var(--blue-deep);
@@ -26,6 +28,30 @@
 :root[data-theme="dark"] #theme-toggle {
     background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
     box-shadow: 0 4px 18px rgba(0,0,0,0.24);
+}
+
+/* Tema escuro - depoimentos */
+:root[data-theme="dark"] .testimonial {
+  background: #0e1a2b;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+:root[data-theme="dark"] .avatar {
+  background: var(--blue-light);
+  color: #0a192f;
+}
+:root[data-theme="dark"] .modal-content {
+  background: #0e1a2b;
+  color: var(--text);
+}
+:root[data-theme="dark"] .modal-content input,
+:root[data-theme="dark"] .modal-content textarea,
+:root[data-theme="dark"] .modal-content select {
+  background: #071223;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f1f5f9;
+}
+:root[data-theme="dark"] .close {
+  color: #94a3b8;
 }
 
 * {
@@ -57,11 +83,12 @@ section + section {
 
 /* Header */
 .site-header {
-  background: transparent;
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 60;
-  padding: 8px 0;
+  z-index: 10;
+  width: 100%;
+  padding: 1px 0;
+  background: var(--bg);
 }
 /* Mobile menu button */
 #mobile-menu-btn {
@@ -105,7 +132,7 @@ section + section {
 
 .header-controls {
   display: flex;
-  gap: 10px;
+  gap: 5px;
   align-items: center;
 }
 /* Botão de alternância de tema */
@@ -196,11 +223,48 @@ section + section {
 .hero-copy h1 {
   font-family: Poppins, Inter;
   font-size: 36px;
-  margin: 0 0 12px;
+  margin: 0 0 16px;
+  color: var(--blue-deep);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideUp 0.8s forwards;
+}
+.hero-copy p {
+  font-size: 18px;
+  color: var(--text);
+  margin-bottom: 24px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideUp 0.8s forwards;
+  animation-delay: 0.2s;
+}
+.hero-copy .btn {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideUp 0.8s forwards;
+  animation-delay: 0.4s;
+}
+.tips-hero {
+  background: linear-gradient(135deg, #e6f0ff 0%, var(--bg) 100%);
+  padding: 60px 0;
+  position: relative;
+  overflow: hidden;
+  margin-top: 1%;
 }
 .lead {
   color: var(--muted);
   margin: 0 0 18px;
+}
+/* Hero media */
+.hero-media img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideUp 0.8s forwards;
+  animation-delay: 0.6s;
 }
 .hero-media img,
 .tips-hero img {
@@ -243,6 +307,8 @@ section + section {
   float: left;        /* texto flui ao lado */
 }
 /* Contact */
+
+
 .contact form {
   display: flex;
   flex-direction: column;
@@ -315,5 +381,159 @@ section + section {
   }
   .hero-copy h1 {
     font-size: 28px;
+  }
+}
+
+/* Depoimentos */
+.testimonials {
+  padding: 4rem 1rem;
+  background: var(--bg-alt);
+  color: var(--text);
+  text-align: center;
+}
+
+.testimonials h2 {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: var(--text);
+}
+
+
+.testimonials-carousel {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 1rem;
+  scrollbar-width: none;
+}
+
+.testimonials-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.testimonial {
+  flex: 0 0 300px;
+  background: var(--card-bg);
+  border-radius: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  padding: 1.5rem;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.testimonial:hover {
+  transform: scale(1.05);
+}
+
+.testimonial-bubble {
+  font-style: italic;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.avatar {
+  background: var(--accent);
+  color: white;
+  font-weight: bold;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+}
+
+.testimonial-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.stars {
+  color: gold;
+  font-size: 1rem;
+}
+
+/* ====================== Modal ====================== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  background: var(--bg);
+  padding: 24px;
+  border-radius: var(--radius);
+  max-width: 400px;
+  width: 90%;
+  position: relative;
+  text-align: left;
+}
+.modal-content label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 500;
+}
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+}
+.modal-content textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+.close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 22px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--blue);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1000;
+    animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+/* Animação fade + slide */
+@keyframes fadeSlideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
