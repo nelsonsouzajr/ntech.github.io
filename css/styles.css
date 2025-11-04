@@ -121,8 +121,22 @@ section + section {
   font-family: Poppins, Inter, Arial;
 }
 .main-nav {
-  display: flex;
+  display: none;
   gap: 18px;
+}
+/* quando aberto */
+.main-nav.open {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: absolute;
+  right: 18px;
+  top: 64px;
+  background: var(--muted-bg);
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+  z-index: 50;
 }
 .main-nav a {
   color: var(--text);
@@ -441,6 +455,16 @@ section + section {
   .contact-box { padding: 40px; }
   .contact-form-wrapper { max-width: 1100px; }
 }
+/* desktop mantém o layout normal */
+@media (min-width: 768px) {
+  .main-nav {
+    display: flex;
+    position: static;
+    flex-direction: row;
+    box-shadow: none;
+    background: transparent;
+  }
+}
 /* WhatsApp float */
 .whatsapp-float {
   position: fixed;
@@ -479,6 +503,18 @@ section + section {
   .cards {
     grid-template-columns: repeat(2, 1fr);
   }
+  .testimonials {
+    padding: 2.5rem 1rem;
+  }
+  .testimonials-carousel {
+    gap: 1rem;
+    max-width: 80%;
+  }
+  .testimonial {
+    flex: 0 0 85%;
+    min-width: 85%;
+    padding: 16px;
+  }
 }
 @media (max-width: 640px) {
   .main-nav {
@@ -493,7 +529,7 @@ section + section {
   .hero-copy h1 {
     font-size: 28px;
   }
-}
+} 
 
 @media (max-width: 768px) {
   .contact-box {
@@ -509,14 +545,19 @@ section + section {
 /* Depoimentos */
 .testimonials {
   display: flex;
+  width: 95%;
   gap: 16px;
+  padding: 16px;
+  margin-left: 2.5%;
+  margin-right: 5%;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 16px;
-  padding: 4rem 1rem;
+    
   background: var(--bg-alt);
   color: var(--text);
   text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .testimonials h2 {
@@ -528,7 +569,9 @@ section + section {
 
 .testimonials-carousel {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
+  width: 100%;
+  padding: 16px;
   overflow-x: auto;
   scroll-behavior: smooth;
   padding-bottom: 1rem;
@@ -540,7 +583,7 @@ section + section {
 }
 
 .testimonial {
-  flex: 0 0 85%;
+  flex: 0 0 95%;
   scroll-snap-align: start;
   background: #fff;
   border-radius: 12px;
@@ -551,11 +594,13 @@ section + section {
   position: relative;
   cursor: pointer;
   transition: transform 0.3s ease;
+  max-width: 50%;
 }
 
 .testimonial:hover {
   transform: scale(1.05);
 }
+
 
 .testimonial-bubble {
   font-style: italic;

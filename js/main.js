@@ -47,6 +47,52 @@ document.addEventListener("DOMContentLoaded", () => {
     setTheme(localStorage.getItem("ntech-theme") || "light");
   }
 
+  /* ---------- Mobile Menu ---------- */
+  const mobileBtn = safeQuery("mobile-menu-btn");
+  // nav é um seletor CSS, safeQuery usa getElementById — usar querySelector aqui
+  const nav = document.querySelector(".main-nav");
+
+  if (mobileBtn && nav) {
+    // acessibilidade inicial
+    mobileBtn.setAttribute("aria-expanded", "false");
+    // aria-pressed pertence ao botão de toggle
+    mobileBtn.setAttribute("aria-pressed", "false");
+    // garante que o nav tenha id para aria-controls
+    if (!nav.id) nav.id = "main-nav";
+    mobileBtn.setAttribute("aria-controls", nav.id);
+
+    //toggle ao clicar
+    mobileBtn.addEventListener("click", () => {
+      const isOpen = nav.classList.toggle("open");
+      mobileBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      mobileBtn.setAttribute("aria-pressed", isOpen ? "true" : "false");
+    });
+
+    // fecha o menu ao clicar em um link
+    nav.querySelectorAll("a").forEach((link) => 
+      link.addEventListener("click", () => {
+        if (nav.classList.contains("open")) {
+          nav.classList.remove("open");
+          mobileBtn.setAttribute("aria-expanded", "false");
+          nav.setAttribute("aria-pressed", "false");
+        }
+      })
+    );
+
+    // fecha ao clicar fora
+    document.addEventListener("click", (evt) => {
+      if (
+        nav.classList.contains("open") &&
+        !nav.contains(evt.target) &&
+        !mobileBtn.contains(evt.target)
+      ) {
+        nav.classList.remove("open");
+        mobileBtn.setAttribute("aria-expanded", "false");
+        mobileBtn.setAttribute("aria-pressed", "false");
+      }
+    });
+  }
+  /* ---------- Mobile Menu end ---------- */
   /* ---------- Rolagem automática dos depoimentos ---------- */
   const carousel = document.querySelector(".testimonials-carousel");
   if (carousel) {
