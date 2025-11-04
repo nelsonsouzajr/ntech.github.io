@@ -307,12 +307,86 @@ section + section {
   float: left;        /* texto flui ao lado */
 }
 /* Contact */
-
+.contact {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.contact-section {
+  background: #f9fbff;
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+}
+.contact-box {
+  display: flex;
+  flex-direction: column; /* empilha sempre: info acima, form abaixo */
+  gap: 24px;
+  padding: 32px;
+  background: var(--muted-bg);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  align-items: stretch; /* crianças ocupam largura disponível */
+}
 
 .contact form {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  align-self: center;
+}
+
+
+.contact-details li {
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.contact-details a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.contact-form {  
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.contact-form-wrapper {
+  flex: 1 1 380px;  
+  flex-direction: column;
+  margin: 0 auto;
+  
+}
+
+.contact-form-wrapper form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 60%;
+}
+
+.contact-form-wrapper input,
+.contact-form-wrapper textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--bg);
+}
+
+.contact-form-wrapper textarea {
+  resize: vertical;
+  min-height: 120px;
+  
+}
+
+.contact-form-wrapper button {
+  align-self: flex-end;
+  padding: 12px 24px;
 }
 .contact input,
 .contact textarea {
@@ -329,7 +403,44 @@ section + section {
   height: auto;
   border-radius: 12px;
 }
+/* Garantir que a info fique no topo e o formulário abaixo */
+.contact-info {
+  order: 1;
+  width: 100%;
+  text-align: left;
+}
+/* Formulário abaixo, ocupando toda a largura (ou ajuste max-width) */
+.contact-form-wrapper {
+  order: 2;
+  width: 100%;
+  max-width: 900px; /* remova ou ajuste se quiser ocupar exatamente 100% */
+}
+/* Layout interno do form — botão e inputs alinhados à esquerda */
+.contact-form-wrapper form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch; /* garante inputs e botão à esquerda (full width) */
+}
 
+#contact-form .input-group {
+  display: flex;
+  flex-direction: column; /* se quiser inputs lado a lado, mude aqui */
+  gap: 12px;
+}
+
+/* Se preferir que o botão NÃO ocupe 100% e fique à esquerda, use: */
+#contact-form button {
+  width: auto;
+  align-self: flex-start;
+  padding: 12px 24px;
+}
+
+/* Pequeno ajuste visual para telas muito largas */
+@media (min-width: 1400px) {
+  .contact-box { padding: 40px; }
+  .contact-form-wrapper { max-width: 1100px; }
+}
 /* WhatsApp float */
 .whatsapp-float {
   position: fixed;
@@ -384,8 +495,24 @@ section + section {
   }
 }
 
+@media (max-width: 768px) {
+  .contact-box {
+    flex-direction: column;
+  }
+
+  .contact-form-wrapper,
+  .contact-info {
+    width: 100%;
+    order: unset;
+  }
+}
 /* Depoimentos */
 .testimonials {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 16px;
   padding: 4rem 1rem;
   background: var(--bg-alt);
   color: var(--text);
@@ -413,11 +540,14 @@ section + section {
 }
 
 .testimonial {
-  flex: 0 0 300px;
+  flex: 0 0 85%;
+  scroll-snap-align: start;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;  
   background: var(--card-bg);
   border-radius: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);  
   position: relative;
   cursor: pointer;
   transition: transform 0.3s ease;
@@ -431,6 +561,9 @@ section + section {
   font-style: italic;
   margin-bottom: 1rem;
   position: relative;
+}
+.testimonials::-webkit-scrollbar {
+  display: none; /* remove a barra de rolagem */
 }
 
 .avatar {
@@ -482,7 +615,7 @@ section + section {
   text-align: left;
 }
 .modal-content label {
-  display: block;
+  display: fixed;
   margin-top: 10px;
   font-weight: 500;
 }
@@ -499,6 +632,18 @@ section + section {
   resize: vertical;
   min-height: 80px;
 }
+#depoimentoModal.active {
+  display: flex;
+}
+
+#depoimentoModal .modal-content {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
 .close {
   position: absolute;
   top: 8px;
@@ -507,18 +652,36 @@ section + section {
   color: var(--muted);
   cursor: pointer;
 }
-
+/* ====================== Toast (mensagem de feedback) ====================== */
 .toast {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: var(--blue);
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    z-index: 1000;
-    animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+  position: fixed;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: all 0.4s ease;
+  z-index: 9999;
+}
+
+.toast.show {
+  top: 20px;
+  opacity: 1;
+}
+
+.toast.success {
+  background-color: rgba(40, 167, 69, 0.9);
+  backdrop-filter: blur(6px);
+}
+
+.toast.error {
+  background-color: rgba(220, 53, 69, 0.9);
+  backdrop-filter: blur(6px);
 }
 
 @keyframes slideIn {
@@ -536,4 +699,21 @@ section + section {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

@@ -1,159 +1,170 @@
 // =====================================
-// main.js – NTech
+// main.js – NTech (versão aprimorada)
 // =====================================
-
-// Seleciona o botão e o elemento raiz (HTML)
-const themeToggle = document.getElementById("theme-toggle");
-const root = document.documentElement;
-
-// Função para definir o tema (força 'light' ou 'dark')
-const setTheme = (theme) => {
-  const validTheme = theme === "dark" ? "dark" : "light";
-  root.setAttribute("data-theme", validTheme);
-
-  // Atualiza ícones de acordo com o tema
-  const sunIcon = themeToggle.querySelector(".sun");
-  const moonIcon = themeToggle.querySelector(".moon");
-
-  if (validTheme === "dark") {
-    sunIcon.style.opacity = "0";
-    sunIcon.style.transform = "rotate(90deg)";
-    moonIcon.style.opacity = "1";
-    moonIcon.style.transform = "rotate(0deg)";
-  } else {
-    sunIcon.style.opacity = "1";
-    sunIcon.style.transform = "rotate(0deg)";
-    moonIcon.style.opacity = "0";
-    moonIcon.style.transform = "rotate(-90deg)";
+document.addEventListener("DOMContentLoaded", () => {
+  /* ---------- Helpers ---------- */
+  function showToast(message, type = "success") {
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.classList.add("show"), 100);
+    setTimeout(() => {
+      toast.classList.remove("show");
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
   }
 
-  localStorage.setItem("ntech-theme", validTheme);
-  console.log("Tema definido:", validTheme);
-};
+  function safeQuery(id) {
+    return document.getElementById(id) || null;
+  }
 
-// Função para alternar o tema atual
-const toggleTheme = () => {
-  const currentTheme = root.getAttribute("data-theme");
-  setTheme(currentTheme === "light" ? "dark" : "light");
-};
+  /* ---------- Theme Toggle ---------- */
+  const themeToggle = safeQuery("theme-toggle");
+  const root = document.documentElement;
+  if (themeToggle) {
+    const setTheme = (theme) => {
+      const valid = theme === "dark" ? "dark" : "light";
+      root.setAttribute("data-theme", valid);
+      try {
+        const sun = themeToggle.querySelector(".sun");
+        const moon = themeToggle.querySelector(".moon");
+        if (sun && moon) {
+          if (valid === "dark") {
+            sun.style.opacity = "0";
+            moon.style.opacity = "1";
+          } else {
+            sun.style.opacity = "1";
+            moon.style.opacity = "0";
+          }
+        }
+      } catch (e) {}
+      localStorage.setItem("ntech-theme", valid);
+    };
+    const toggleTheme = () =>
+      setTheme(root.getAttribute("data-theme") === "light" ? "dark" : "light");
+    themeToggle.addEventListener("click", toggleTheme);
+    setTheme(localStorage.getItem("ntech-theme") || "light");
+  }
 
-// Evento de clique no botão
-themeToggle.addEventListener("click", toggleTheme);
+  /* ---------- Rolagem automática dos depoimentos ---------- */
+  const carousel = document.querySelector(".testimonials-carousel");
+  if (carousel) {
+    let scrollAmount = 0;
+    const scrollStep = 1;
+    const delay = 10;
 
-// Define o tema inicial
-const storedTheme = localStorage.getItem("ntech-theme");
-setTheme(storedTheme ? storedTheme : "light");
-
-// Rolagem automática dos depoimentos
-const carousel = document.querySelector('.testimonials-carousel');
-if (carousel) {
-  let scrollAmount = 0;
-  const scrollStep = 1;
-  const delay = 10;
-
-  function autoScroll() {
-    if (carousel.scrollWidth - carousel.clientWidth === scrollAmount) {
-      scrollAmount = 0;
-    } else {
-      scrollAmount += scrollStep;
+    function autoScroll() {
+      if (carousel.scrollWidth - carousel.clientWidth === scrollAmount) {
+        scrollAmount = 0;
+      } else {
+        scrollAmount += scrollStep;
+      }
+      carousel.scrollTo({
+        left: scrollAmount,
+        behavior: "smooth",
+      });
     }
-    carousel.scrollTo({
-      left: scrollAmount,
-      behavior: 'smooth'
+
+    let autoScrollInterval = setInterval(autoScroll, delay);
+    carousel.addEventListener("mouseenter", () =>
+      clearInterval(autoScrollInterval)
+    );
+    carousel.addEventListener(
+      "mouseleave",
+      () => (autoScrollInterval = setInterval(autoScroll, delay))
+    );
+  }
+
+  /* ---------- Modal Depoimentos ---------- */
+  const openFormBtn = document.getElementById("openForm");
+  const closeFormBtn = document.getElementById("closeForm");
+  const modal = document.getElementById("testimonialModal");
+
+  if (openFormBtn && closeFormBtn && modal) {
+    openFormBtn.addEventListener("click", () => {
+      modal.style.display = "flex";
+    });
+    closeFormBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+    window.addEventListener("click", (e) => {
+      if (e.target === modal) modal.style.display = "none";
     });
   }
 
-
-  let autoScrollInterval = setInterval(autoScroll, delay);
-
-  // Pausa ao interagir
-  carousel.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
-  carousel.addEventListener('mouseleave', () => autoScrollInterval = setInterval(autoScroll, delay));
-}
-// ====================== Modal Depoimentos ======================
-const openFormBtn = document.getElementById("openForm");
-const closeFormBtn = document.getElementById("closeForm");
-const modal = document.getElementById("testimonialModal");
-
-if (openFormBtn && closeFormBtn && modal) {
-  openFormBtn.addEventListener("click", () => modal.style.display = "flex");
-  closeFormBtn.addEventListener("click", () => modal.style.display = "none");
-  window.addEventListener("click", (e) => {
-    if (e.target === modal) modal.style.display = "none";
-  });
-}
-
-// ====================== Fim Modal Depoimentos ======================
-
-// ====================== Máscara para telefone
-const phoneInput = document.getElementById('telephone');
-if (phoneInput) {
-    phoneInput.addEventListener('input', (e) => {
-        let value = e.target.value;
-        
-        // Remove tudo que não é número
-        value = value.replace(/\D/g, '');
-        
-        // Aplica a máscara conforme digita
-        if (value.length <= 11) {
-            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
-            value = value.replace(/(\d)(\d{4})$/, '$1-$2');
+  /* ---------- Máscara telefone ---------- */
+  try {
+    const phoneInput = safeQuery("telephone");
+    if (phoneInput) {
+      phoneInput.addEventListener("input", (e) => {
+        let v = e.target.value.replace(/\D/g, "");
+        if (v.length > 11) v = v.slice(0, 11);
+        if (v.length <= 10) {
+          v = v.replace(/^(\d{2})(\d)/, "($1) $2");
+          v = v.replace(/(\d)(\d{4})$/, "$1-$2");
+        } else {
+          v = v.replace(/^(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
         }
-        
-        // Atualiza o valor do input
-        e.target.value = value;
-    });
+        e.target.value = v;
+      });
+    }
+  } catch (err) {
+    console.warn("Phone mask error:", err);
+  }
 
-    // Impede caracteres não numéricos
-    phoneInput.addEventListener('keypress', (e) => {
-        if (!/\d/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete') {
-            e.preventDefault();
-        }
-    });
-}
-// ====================== Formulário de Contato ======================
-const contactForm = document.getElementById("contact-form");
-if (contactForm) {
-    contactForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        
-        // Pega o botão e muda o texto
-        const submitBtn = document.getElementById("submitBtn");
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = "Enviando...";
+  /* ---------- FORMULÁRIOS GERAIS (Contato + Depoimentos) ---------- */
+  const forms = document.querySelectorAll("form[data-formsubmit]");
+  const invisibleFrame = document.querySelector(
+    'iframe[name="invisible_iframe"]'
+  );
+
+  forms.forEach((formEl) => {
+    const modal = formEl.closest(".modal");
+    const submitBtn = formEl.querySelector('button[type="submit"]');
+
+    formEl.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const originalText = submitBtn ? submitBtn.textContent : "Enviar";
+
+      if (submitBtn) {
         submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+      <span class="spinner"></span> Enviando...
+    `;
+      }
 
-        try {
-            // Prepara os dados do formulário
-            const formData = new FormData(contactForm);
-            const data = {};
-            formData.forEach((value, key) => data[key] = value);
+      try {
+        const formData = new FormData(formEl);
+        const response = await fetch(formEl.action, {
+          method: "POST",
+          body: formData,
+        });
 
-            // Envia o formulário via AJAX
-            const response = await fetch(contactForm.action, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-
-            // Limpa o formulário e mostra mensagem de sucesso
-            contactForm.reset();
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = "Mensagem enviada com sucesso!";
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-            
-        } catch (error) {
-            console.error('Erro:', error);
-            alert("Erro ao enviar mensagem. Por favor, tente novamente.");
-        } finally {
-            // Restaura o botão
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
+        if (response.ok) {
+          showToast("✅ Enviado com sucesso!", "success");
+          formEl.reset();
+          if (modal) modal.style.display = "none";
+        } else {
+          showToast("⚠️ Erro ao enviar.", "error");
         }
+      } catch (err) {
+        console.warn("Erro no envio via fetch, tentando fallback iframe:", err);
+        if (invisibleFrame) {
+          formEl.target = "invisible_iframe";
+          formEl.submit();
+          showToast("✅ Enviado com sucesso! (via fallback)", "success");
+          formEl.reset();
+          if (modal) modal.style.display = "none";
+        } else {
+          showToast("⚠️ Falha ao enviar.", "error");
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      }
     });
-}
+  });
+});

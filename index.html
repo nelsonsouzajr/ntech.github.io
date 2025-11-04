@@ -228,7 +228,9 @@
   <div class="modal-content">
     <span class="close" id="closeForm">&times;</span>
     <h3>Envie seu depoimento</h3>
-    <form action="https://formsubmit.co/ntechbrazil@gmail.com" method="POST">
+    <form id="testimonial-form" data-formsubmit
+          action="https://formsubmit.co/ntechbrazil@gmail.com" 
+          method="POST" target="invisible_iframe">
       <input type="hidden" name="_subject" value="Novo depoimento NTech!">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_template" value="table">
@@ -262,29 +264,46 @@
 
     <!-- Contato -->
     <section id="contato" class="contact">
-      <div class="container">
-        <h2>Contato</h2>   
-        <form id="contact-form" action="https://formsubmit.co/ajax/ntechbrazil@gmail.com" method="POST">
+      <div class="container contact-box">
+        <div class="contact-info"></div>
+          <h2>Contato</h2> 
+          <p>Tem alguma dúvida, problema técnico ou quer solicitar um orçamento? Envie sua mensagem e retornaremos o mais breve possível.</p>
+
+          
+        
+          <!-- Formulário -->
+      <div class="contact-form-wrapper">
+        <form id="contact-form" data-formsubmit 
+              action="https://formsubmit.co/ntechbrazil@gmail.com" 
+              method="POST" target="invisible_iframe">          
           <input type="hidden" name="_subject" value="Novo Contato - NTech">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_template" value="table">
-          
-          <input type="text" id="name" name="name" placeholder="Seu nome" required />
-          <input type="email" id="email" name="email" placeholder="Seu email" required />
+
+          <div class="input-group">
+            <input type="text" id="name" name="name" placeholder="Seu nome" required />
+            <input type="email" id="email" name="email" placeholder="Seu email" required />
+          </div>
+
           <input 
-            type="tel" 
-            id="telephone" 
-            name="telephone" 
-            placeholder="(99) 99999-9999" 
+            type="tel"
+            id="telephone"
+            name="telephone"
+            placeholder="(99) 99999-9999"
             maxlength="15"
-            required 
+            required
           />
+
           <textarea id="message" name="message" placeholder="Descreva o problema" required></textarea>
-          
+
           <button type="submit" id="submitBtn" class="btn primary">Enviar Mensagem</button>
+          
         </form>
+          
+        
       </div>
-    </section>
+    </div>
+  </section>
   </main>
   <!-- WhatsApp flutuante -->
   <a class="whatsapp-float" href="https://wa.me/+5519997074367" target="_blank"
