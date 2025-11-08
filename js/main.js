@@ -100,32 +100,79 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ---------- Mobile Menu end ---------- */
   /* ---------- Rolagem automática dos depoimentos ---------- */
   const carousel = document.querySelector(".testimonials-carousel");
-  if (carousel) {
-    let scrollPos = 0;
-    const scrollSpeed = 0.5; // velocidade suave
-    let animationFrame;
+if (carousel) {
+  let scrollAmount = 0;
+  const scrollStep = 1;
+  const delay = 20;
+  let isDragging = false;
+  let startX, scrollStart;
 
-    function smoothScroll() {
-      scrollPos += scrollSpeed;
-      if (scrollPos >= carousel.scrollWidth - carousel.clientWidth) {
-        scrollPos = 0; // reinicia no começo
-      }
-      carousel.scrollLeft = scrollPos;
-      animationFrame = requestAnimationFrame(smoothScroll);
+  // Rolagem automática suave
+  function autoScroll() {
+    if (carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth) {
+      carousel.scrollLeft = 0;
+    } else {
+      carousel.scrollLeft += scrollStep;
     }
-
-    // Inicia a animação
-    animationFrame = requestAnimationFrame(smoothScroll);
-
-    // Pausa ao passar o mouse
-    carousel.addEventListener("mouseenter", () =>
-      cancelAnimationFrame(animationFrame)
-    );
-    carousel.addEventListener(
-      "mouseleave",
-      () => (animationFrame = requestAnimationFrame(smoothScroll))
-    );
   }
+
+  let autoScrollInterval = setInterval(autoScroll, delay);
+
+  // Pausa ao passar o mouse (desktop)
+  carousel.addEventListener("mouseenter", () => clearInterval(autoScrollInterval));
+  carousel.addEventListener("mouseleave", () => {
+    autoScrollInterval = setInterval(autoScroll, delay);
+  });
+
+  // Suporte a arrastar (mouse e toque)
+  carousel.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    startX = e.pageX - carousel.offsetLeft;
+    scrollStart = carousel.scrollLeft;
+    clearInterval(autoScrollInterval);
+    carousel.classList.add("dragging");
+  });
+
+  carousel.addEventListener("mouseleave", () => {
+    isDragging = false;
+    carousel.classList.remove("dragging");
+    autoScrollInterval = setInterval(autoScroll, delay);
+  });
+
+  carousel.addEventListener("mouseup", () => {
+    isDragging = false;
+    carousel.classList.remove("dragging");
+    autoScrollInterval = setInterval(autoScroll, delay);
+  });
+
+  carousel.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - carousel.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    carousel.scrollLeft = scrollStart - walk;
+  });
+
+  // Suporte a toque (mobile)
+  carousel.addEventListener("touchstart", (e) => {
+    isDragging = true;
+    startX = e.touches[0].pageX - carousel.offsetLeft;
+    scrollStart = carousel.scrollLeft;
+    clearInterval(autoScrollInterval);
+  });
+
+  carousel.addEventListener("touchend", () => {
+    isDragging = false;
+    autoScrollInterval = setInterval(autoScroll, delay);
+  });
+
+  carousel.addEventListener("touchmove", (e) => {
+    if (!isDragging) return;
+    const x = e.touches[0].pageX - carousel.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    carousel.scrollLeft = scrollStart - walk;
+  });
+}
 
   /* ---------- Modal Depoimentos ---------- */
   const openFormBtn = document.getElementById("openForm");
