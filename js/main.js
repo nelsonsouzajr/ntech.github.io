@@ -46,7 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
     themeToggle.addEventListener("click", toggleTheme);
     const userPref =
       localStorage.getItem("ntech-theme") ||
-      (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      (window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light");
     setTheme(userPref);
   }
 
@@ -72,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // fecha o menu ao clicar em um link
-    nav.querySelectorAll("a").forEach((link) => 
+    nav.querySelectorAll("a").forEach((link) =>
       link.addEventListener("click", () => {
         if (nav.classList.contains("open")) {
           nav.classList.remove("open");
@@ -98,31 +100,32 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ---------- Mobile Menu end ---------- */
   /* ---------- Rolagem automática dos depoimentos ---------- */
   const carousel = document.querySelector(".testimonials-carousel");
-if (carousel) {
-  let scrollPos = 0;
-  const scrollSpeed = 0.5; // velocidade suave
-  let animationFrame;
+  if (carousel) {
+    let scrollPos = 0;
+    const scrollSpeed = 0.5; // velocidade suave
+    let animationFrame;
 
-  function smoothScroll() {
-    scrollPos += scrollSpeed;
-    if (scrollPos >= carousel.scrollWidth - carousel.clientWidth) {
-      scrollPos = 0; // reinicia no começo
+    function smoothScroll() {
+      scrollPos += scrollSpeed;
+      if (scrollPos >= carousel.scrollWidth - carousel.clientWidth) {
+        scrollPos = 0; // reinicia no começo
+      }
+      carousel.scrollLeft = scrollPos;
+      animationFrame = requestAnimationFrame(smoothScroll);
     }
-    carousel.scrollLeft = scrollPos;
+
+    // Inicia a animação
     animationFrame = requestAnimationFrame(smoothScroll);
+
+    // Pausa ao passar o mouse
+    carousel.addEventListener("mouseenter", () =>
+      cancelAnimationFrame(animationFrame)
+    );
+    carousel.addEventListener(
+      "mouseleave",
+      () => (animationFrame = requestAnimationFrame(smoothScroll))
+    );
   }
-
-  // Inicia a animação
-  animationFrame = requestAnimationFrame(smoothScroll);
-
-  // Pausa ao passar o mouse
-  carousel.addEventListener("mouseenter", () =>
-    cancelAnimationFrame(animationFrame)
-  );
-  carousel.addEventListener("mouseleave", () =>
-    (animationFrame = requestAnimationFrame(smoothScroll))
-  );
-}
 
   /* ---------- Modal Depoimentos ---------- */
   const openFormBtn = document.getElementById("openForm");
